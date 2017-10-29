@@ -8,3 +8,4 @@
 |Comparison Discussion | | |輪廓處較不明顯，圖片深淺也區分的較粗略 | 圖片顏色大致與灰階圖相近，只是畫質不好，呈現格子狀|試過多種陣列組合，效果還是無法像原陣列一樣好| 
 
 
+# Teacher Comments: Excellent work and excellent report. Please submit the link to this repository through the assignment submission link on 東華e學苑。
