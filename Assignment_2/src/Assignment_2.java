@@ -1,10 +1,6 @@
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,11 +17,11 @@ public class Assignment_2 {
 	public static final int A = 1000;
 	public static final double F = 8000.0;
 	
-	static byte[] music = new byte[8000*100];
+	static byte[] music = new byte[8000*40];
 	
-	static byte[] sound(int pitch, int tT) throws IOException 
+	static byte[] sound(int pitch_2,int pitch_4, int tT) throws IOException 
 	{
-		byte[] data = new byte[(int) (F*tT)];
+		byte[] data = new byte[(int) (F*tT*2)];
 		
 		double T = tT *0.5;
 		double n = T * F;
@@ -34,12 +30,14 @@ public class Assignment_2 {
 		{
 	
 			 
-			double a = A * Math.sin(2 * (Math.PI) * (i / F) * pitch);
-			data[i] = (byte) a;
-			//data[i] += (byte)a;
+			double a_2 = A * Math.sin(2 * (Math.PI) * (i / F) * pitch_2);
+			double a_4= 100 * Math.sin(2 * (Math.PI) * (i / F) * pitch_4);
+			data[i] = (byte) a_2;
+			data[i*2] += (byte) a_4;
+			
 			
 		}
-
+		
 		
 		return data;
 		
@@ -167,7 +165,7 @@ static byte[] mix(byte[] da){
 					T = 1;
 					f_2 = f_table_2(f);
 					f_4 = f_table_4(f);
-					rec =sound(f_2, T);
+					rec =sound(f_2,f_4, T);
 					mix(rec);
 				}
 				f = 0;
@@ -175,7 +173,7 @@ static byte[] mix(byte[] da){
 				i = 0;
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
-				rec =sound(f_2, T);
+				rec =sound(f_2,f_4, T);
 				mix(rec);
 			}
 			else {
@@ -199,7 +197,7 @@ static byte[] mix(byte[] da){
 			if (i != 0 && f != -1) {
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
-				rec =sound(f_2, T);
+				rec =sound(f_2,f_4, T);
 				mix(rec);
 			}   
 			
