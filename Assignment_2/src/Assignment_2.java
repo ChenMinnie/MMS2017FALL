@@ -1,110 +1,52 @@
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
-public class Assigment_2 { 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
+public class Assignment_2 { 
+	
+	
 	public static final int A = 1000;
 	public static final double F = 8000.0;
-	static int x = 0;
-	static double[] sound(int pitch, int tT, OutputStream os) throws IOException 
+	
+	static byte[] music = new byte[8000*100];
+	
+	static byte[] sound(int pitch, int tT) throws IOException 
 	{
-		double T = tT * 0.5;
+		byte[] data = new byte[(int) (F*tT)];
+		
+		double T = tT *0.5;
 		double n = T * F;
-		double [] sample;
-		sample= new double[10000];
-		x ++ ;
+		
 		for(int i = 0;i < n;i++)
 		{
-			//double sample;
+	
 			 
 			double a = A * Math.sin(2 * (Math.PI) * (i / F) * pitch);
-			
-			int g = (int)a;
-			
-			os.write(g);
-			
-		//	sample[i] = A * Math.sin(2 * (Math.PI) * (i / 8000.0) * pitch);
+			data[i] = (byte) a;
+			//data[i] += (byte)a;
 			
 		}
+
 		
-		 /*os.write(82);
-		 os.write(73);
-		 os.write(70);
-		 os.write(70);
-		 os.write(173);
-		 os.write(193);
-		 os.write(10);
-		 os.write(0);
-		 os.write(87);
-		 os.write(65);
-		 os.write(86);
-		 os.write(69);
-		 os.write(102);
-		 os.write(109);
-		 os.write(116);
-		 os.write(32);
-		 os.write(16);
-		 os.write(0);
-		 os.write(0);
-		 os.write(0);
-		 os.write(1);
-		 os.write(0);
-		 os.write(1);
-		 os.write(0);
-		 os.write(34);
-		 os.write(86);
-		 os.write(0);
-		 os.write(0);
-		 os.write(34);
-		 os.write(86);
-		 os.write(0);
-		 os.write(0);
-		 os.write(1);
-		 os.write(0);
-		 os.write(8);
-		 os.write(0);
-		 os.write(73);
-		 os.write(78);
-		 os.write(70);
-		 os.write(79);
-		 os.write(18);
-		 os.write(0);
-		 os.write(0);
-		 os.write(0);
-		 os.write(73);
-		 os.write(78);
-		 os.write(65);
-		 os.write(77);
-		 os.write(9);
-		 os.write(0);
-		 os.write(0);
-		 os.write(0);
-		 os.write(65);
-		 os.write(66);
-		 os.write(77);
-		 os.write(90);
-		 os.write(48);
-		 os.write(48);
-		 os.write(52);
-		 os.write(56);
-		 os.write(0);
-		 os.write(10);
-		 os.write(100);
-		 os.write(97);
-		 os.write(116);
-		 os.write(97);
-		 os.write(111);
-		 os.write(193);
-		 os.write(10);
-		 os.write(0);
-		 os.write(10);
-*/
-	   return sample; 
+		return data;
+		
 		
 	}
+	static int k = 0;	
+	
 
 static int f_table_2(int f) { 
 	int pitch;
@@ -175,32 +117,36 @@ static int f_table_4(int f) {
 	}
 	return pitch;
 }
-   public static void main(String[] args) throws Exception {
+static byte[] mix(byte[] da){
+   
+	for( int m = 0;m <da.length;m++){
+		
+	
+		
+			music[k+m] = da[m];
+			
+	
+	}
+		 k = k + da.length;
+		
+	return music;
+	
+}
+
+ public static void main(String[] args) throws Exception {
       
       InputStream is = null;
-      OutputStream os = new FileOutputStream("src/test.wav");
-      int c;
       char ch;
       int flag = 0;
   	  int f = 0, T = 0, f_2 = 0, f_4 = 0;
-  	  int temp = -1;
-  	  int data = 0;
-  	  int i = 0;
-  	  double [] music;
-  	  music= new double[10000];
+  	  int temp = -1; int c;
+  	  int data = 0;  int i = 0;
+      byte[] rec = new byte[8000];
+     
+      int x = 0;
       try{
          
          is = new FileInputStream("src/text.txt");
-       //  InputStream it = new FileInputStream("src/6.wav");
-       
-        	
-         music= sound(5, 2,os);
-         music= sound(4, 1,os);
-        	
-       
-
-       
-      
          while((data=is.read())!=-1)
          {
             
@@ -221,14 +167,16 @@ static int f_table_4(int f) {
 					T = 1;
 					f_2 = f_table_2(f);
 					f_4 = f_table_4(f);
-					//music= sound(f_2, T);
+					rec =sound(f_2, T);
+					mix(rec);
 				}
 				f = 0;
 				T = 1;
 				i = 0;
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
-				//sound(f_2, T,os);
+				rec =sound(f_2, T);
+				mix(rec);
 			}
 			else {
 				c = (int)ch - '0';
@@ -245,19 +193,21 @@ static int f_table_4(int f) {
 					temp = -1;
 					T = c;
 				}
-
+			
 			}
-
+			int m = 0;
 			if (i != 0 && f != -1) {
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
-				//sound(f_2, T,os);
+				rec =sound(f_2, T);
+				mix(rec);
 			}   
-		//	System.out.print(ch);
+			
+			x = x + m;//System.out.print(ch);
 		}
            
-         
-      
+       
+   
       
       }catch(Exception e){
       
@@ -267,8 +217,29 @@ static int f_table_4(int f) {
         
          if(is!=null)
             is.close();
+      
       }
       
+      
+      
+      
+  	AudioFormat ft = new AudioFormat(40000, 8, 1, true, true);
+    AudioInputStream ais = new AudioInputStream(
+      new ByteArrayInputStream(music), ft, 
+      music.length / ft.getFrameSize()
+    );
+   
+    try {
+      AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new
+        File("src/test.wav")
+      );
+    } 
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+     
+      
+ 
    }
    
   
