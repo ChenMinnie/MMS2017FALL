@@ -1,10 +1,9 @@
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -14,38 +13,31 @@ import javax.sound.sampled.AudioSystem;
 public class Assignment_2 { 
 	
 	
-	public static final int A = 1000;
+	public static final int A = 100;
 	public static final double F = 8000.0;
 	
-	static byte[] music = new byte[8000*40];
+	
+	
 	
 	static byte[] sound(int pitch_2,int pitch_4, int tT) throws IOException 
-	{
-		byte[] data = new byte[(int) (F*tT*2)];
+	{   
+		
+		double n ;
+	  
+		byte[] data = new byte[(int) (F*tT)];
 		
 		double T = tT *0.5;
-		double n = T * F;
-		
+		n = T * F;
 		for(int i = 0;i < n;i++)
-		{
-	
-			 
-			double a_2 = A * Math.sin(2 * (Math.PI) * (i / F) * pitch_2);
-			double a_4= 100 * Math.sin(2 * (Math.PI) * (i / F) * pitch_4);
+		{			 
+			double a_2 = (A*2) * Math.sin(2 * (Math.PI) * (i / F) * pitch_2);
+			double a_4=  A * Math.sin(2 * (Math.PI) * (i / F) * pitch_4);
 			data[i] = (byte) a_2;
 			data[i*2] += (byte) a_4;
-			
-			
 		}
-		
-		
 		return data;
-		
-		
 	}
-	static int k = 0;	
 	
-
 static int f_table_2(int f) { 
 	int pitch;
 	pitch = f;
@@ -80,6 +72,7 @@ static int f_table_2(int f) {
 	}
 	return pitch;
 }
+
 static int f_table_4(int f) {
 
 	int pitch;
@@ -115,21 +108,7 @@ static int f_table_4(int f) {
 	}
 	return pitch;
 }
-static byte[] mix(byte[] da){
-   
-	for( int m = 0;m <da.length;m++){
-		
-	
-		
-			music[k+m] = da[m];
-			
-	
-	}
-		 k = k + da.length;
-		
-	return music;
-	
-}
+
 
  public static void main(String[] args) throws Exception {
       
@@ -139,16 +118,18 @@ static byte[] mix(byte[] da){
   	  int f = 0, T = 0, f_2 = 0, f_4 = 0;
   	  int temp = -1; int c;
   	  int data = 0;  int i = 0;
-      byte[] rec = new byte[8000];
-     
-      int x = 0;
+  	  
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
       try{
          
          is = new FileInputStream("src/text.txt");
          while((data=is.read())!=-1)
          {
-            
+        	byte[] rec = new byte[8000];
+        	
             ch = (char)data;
+            
             if (ch == ' ') {
 				i++; continue;
 			}
@@ -166,7 +147,7 @@ static byte[] mix(byte[] da){
 					f_2 = f_table_2(f);
 					f_4 = f_table_4(f);
 					rec =sound(f_2,f_4, T);
-					mix(rec);
+					baos.write(rec);
 				}
 				f = 0;
 				T = 1;
@@ -174,7 +155,7 @@ static byte[] mix(byte[] da){
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
 				rec =sound(f_2,f_4, T);
-				mix(rec);
+			 
 			}
 			else {
 				c = (int)ch - '0';
@@ -198,14 +179,14 @@ static byte[] mix(byte[] da){
 				f_2 = f_table_2(f);
 				f_4 = f_table_4(f);
 				rec =sound(f_2,f_4, T);
-				mix(rec);
+			 
 			}   
-			
-			x = x + m;//System.out.print(ch);
+				
+			baos.write(rec);
+	
 		}
            
-       
-   
+         
       
       }catch(Exception e){
       
@@ -217,33 +198,43 @@ static byte[] mix(byte[] da){
             is.close();
       
       }
-      
-      
-      
-      
+     
+    
+      byte data1 [] = baos.toByteArray();
+      byte data2 [] = baos.toByteArray();
+ 
+    
+	 for(int h = 0;h < data1.length;h++)
+		{			 
+		 
+		   data2 [h] = (byte) (data1 [h] * Math.cos(2 * (Math.PI) * (h / F) * 100));
+		}
+  
+	 
   	AudioFormat ft = new AudioFormat(40000, 8, 1, true, true);
+  	AudioFormat ft2 = new AudioFormat(40000, 8, 1, true, true);
     AudioInputStream ais = new AudioInputStream(
-      new ByteArrayInputStream(music), ft, 
-      music.length / ft.getFrameSize()
+      new ByteArrayInputStream(data1), ft, 
+      data1.length / ft.getFrameSize()
     );
-   
+    AudioInputStream ais2 = new AudioInputStream(
+    	      new ByteArrayInputStream(data2), ft2, 
+    	      data2.length / ft.getFrameSize()
+    	    );
     try {
       AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new
-        File("src/test.wav")
+        File("src/audio_origin.wav")
       );
+      AudioSystem.write(ais2, AudioFileFormat.Type.WAVE, new
+    	        File("src/audio_f100.wav")
+    	      );
     } 
     catch(Exception e) {
       e.printStackTrace();
     }
-     
-      
- 
+
    }
    
-  
-
-
-
 
 }
 
