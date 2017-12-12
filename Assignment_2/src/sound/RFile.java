@@ -127,7 +127,7 @@ public class RFile {
 		 		{			 
 		 		 
 		 		 if(f1!=0){
-		 		   data2 [h] = (byte) (data1 [h] * Math.cos(2 * (Math.PI) * (h / F) * f1));
+		 		     data2 [h] = (byte) (data1 [h] * Math.cos(2 * (Math.PI) * (h / F) * f1));
 		 		   }
 		 		 else 
 		 			data2 [h] = data1[h];

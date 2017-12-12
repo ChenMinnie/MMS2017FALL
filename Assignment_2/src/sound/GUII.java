@@ -88,11 +88,11 @@ public class GUII extends Application {
 		
 		Text txt3 = new Text("範例音檔 :");
 		
-		MenuButton btAdd2 = new MenuButton("小蜜蜂");
+		MenuButton btAdd2 = new MenuButton("請選擇");
 		btAdd2.setPrefSize(100,20);
 		MenuItem item1 = new MenuItem("小蜜蜂"); 
 		MenuItem item2 = new MenuItem("小星星"); 
-		MenuItem item3 = new MenuItem("生日快樂歌");
+		MenuItem item3 = new MenuItem("王老先生有塊地");
 		btAdd2.getItems().add(item1);
 		btAdd2.getItems().add(item2);
 		btAdd2.getItems().add(item3);
@@ -214,6 +214,26 @@ public class GUII extends Application {
         	
         });
 		
+		btAdd6.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	String a = tf.getText();
+            	FileWriter fw;
+				try {
+					AudioPlayer.player.stop(as);
+					fw = new FileWriter("src/sound/test.txt");
+					fw.write(a);
+					fw.close();
+					String[] args = null;
+					RFile.main(args);	
+				} 
+				
+				catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        	
+        });
 		
 		
 		btAdd1.setOnAction(new EventHandler<ActionEvent>() {
@@ -230,7 +250,8 @@ public class GUII extends Application {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				String t = item1.getText();
-				tf.setText("5 3 3(2) - 5 2 2(2) - 1 2 3 4 5 5 5 - ");
+				tf.setText("5 3 3(2) - 5 2 2(2) - 1 2 3 4 5 5 5 - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 3(2) -2 2 2 2 2 3 4(2) - 3 3 3 3 3 4 5(2) - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 1(2) -");
+				tf.setWrapText(true);
 				btAdd2.setText(t);
 
 			}
@@ -241,7 +262,8 @@ public class GUII extends Application {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				String t = item2.getText();
-				tf.setText("123");
+				tf.setText("1 1 5 5 6 6 5(2) - 4 4 3 3 2 2 1(2) - 5 5 4 4 3 3 2(2) - 5 5 4 4 3 3 2(2) - 1 1 5 5 6 6 5(2) - 4 4 3 3 2 2 1(3) - ");
+				tf.setWrapText(true);
 				btAdd2.setText(t);
 					
 			}
@@ -252,7 +274,8 @@ public class GUII extends Application {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				String t = item3.getText();
-				tf.setText("123");
+				tf.setText("5 5 5 2 3 3 2(2) - 7 7 6 6 5(2) - 5 5 5 2 3 3 2(2) - 7 7 6 6 5(2) - 2 2 5 5 5 - 2 2 5 5 5 -  5 5 5 - 5 5 5 - 5 5 5 5 5 5 5 - 5 5 5 2 3 3 2(2) - 7 7 6 6 5(3) - ");
+				tf.setWrapText(true);
 				btAdd2.setText(t);
 			}
 		});
