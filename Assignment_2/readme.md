@@ -23,11 +23,25 @@
 
 ## Demonstrate The Results
 ### GUI
-![demonstrate1](https://user-images.githubusercontent.com/32957934/33890870-6066f89c-df8f-11e7-80ce-02f4cff23ae4.JPG)
 
-### 選擇範例音檔
-![demonstrate2](https://user-images.githubusercontent.com/32957934/33890889-6eec7284-df8f-11e7-984c-cfbb8aa24412.JPG)
 
-### 選擇變音頻率
-![demonstrate3](https://user-images.githubusercontent.com/32957934/33890928-82e4771e-df8f-11e7-9ee7-8c4b01ec413c.JPG)
+### 功能
+
+#### 1.自行輸入簡譜
+
+#### 2.選擇範例簡譜
+
+#### 3.清除輸入
+
+#### 5.建造音檔
+
+#### 4.選擇變音頻率
+
+#### 5.播放與停止
+
+### Sound
+#### 1. 小蜜蜂
+##### 正常
+###### * 音檔
+###### * 頻譜圖
 
