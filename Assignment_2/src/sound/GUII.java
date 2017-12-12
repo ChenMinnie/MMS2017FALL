@@ -102,7 +102,7 @@ public class GUII extends Application {
 		hbox1.getChildren().add(btAdd2);
 		hbox1.setSpacing(50);
 		
-		Text txt5 = new Text("變聲效果");
+		Text txt5 = new Text("變聲效果 :");
 		pane.add(txt5, 1, 3);
 		
 		VBox vbox1 = new VBox();
@@ -250,7 +250,7 @@ public class GUII extends Application {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				String t = item1.getText();
-				tf.setText("5 3 3(2) - 5 2 2(2) - 1 2 3 4 5 5 5 - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 3(2) -2 2 2 2 2 3 4(2) - 3 3 3 3 3 4 5(2) - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 1(2) -");
+				tf.setText("5 3 3(2) - 4 2 2(2) - 1 2 3 4 5 5 5 - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 3(2) -2 2 2 2 2 3 4(2) - 3 3 3 3 3 4 5(2) - 5 3 3(2) - 4 2 2(2) - 1 3 5 5 1(2) -");
 				tf.setWrapText(true);
 				btAdd2.setText(t);
 
