@@ -10,7 +10,10 @@
 using namespace cv;
 using namespace std;
 double MAD(IplImage * C, IplImage *R, int i, int j,int X0,int Y0);
+
 void Sequential(IplImage * C, IplImage *R,Mat ip2, int x, int y);
+
+void TwoD_logarithm(IplImage * C, IplImage *R, Mat ip2, int x0, int y0);
 
 int P = (S - 1) / 2;
 
@@ -44,8 +47,9 @@ int main() {
 		
 		for (y0 = N / 2; y0 < image_C->width; y0 = y0 + N) {
 	
-		    Sequential(image_C, image_R, ip2, x0, y0);
-	
+		//    Sequential(image_C, image_R, ip2, x0, y0);
+			TwoD_logarithm(image_C, image_R, ip2, x0, y0);
+			printf("\n");
 		}
 	}
 	
@@ -103,37 +107,35 @@ double MAD(IplImage * C, IplImage *R, int i, int j,int X0,int Y0) {
 	return mad;
 }
 
-void Sequential(IplImage * C, IplImage *R, Mat ip2,int x0,int y0) {
+void Sequential(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
 
-	int u=0, v = 0;
-	
+	int u = 0, v = 0;
+
 	Mat matR = cvarrToMat(R);
-	
-	Mat dst(matR.rows, matR.cols, CV_8U);
-	
+
 	double cur_MAD = 0;
 	double min_MAD = 10000.0;
 
 	for (int i = -P; i <= P; i++) {
 		for (int j = -P; j <= P; j++) {
-			
+
 			cur_MAD = MAD(C, R, i, j, x0, y0);
 
 			if (cur_MAD < min_MAD) {
 
-				min_MAD = cur_MAD; 
+				min_MAD = cur_MAD;
 
 				u = i, v = j;
 			}
 		}
 	}
 	int x = x0 - (N / 2.0), y = y0 - (N / 2.0);
-	
+
 	for (int q = 0; q < N; q++) {
-		for (int p = 0 ; p < N; p++) {
-			if (x >= ip2.rows - 1) x = ip2.rows -1;
-			
-			if (y >= ip2.cols - 1) y = ip2.cols -1;
+		for (int p = 0; p < N; p++) {
+			if (x >= ip2.rows - 1) x = ip2.rows - 1;
+
+			if (y >= ip2.cols - 1) y = ip2.cols - 1;
 
 			int n = x + u + P;
 
@@ -144,23 +146,81 @@ void Sequential(IplImage * C, IplImage *R, Mat ip2,int x0,int y0) {
 			if (m >= ip2.cols - 1) m = ip2.cols - 1;
 
 			ip2.at<uchar>(x, y) = matR.at<uchar>(n, m);
-		
-		
-		
-			 y++;
+
+
+
+			y++;
 		}
-		x++; 
+		x++;
 		y = y0 - (N / 2.0);
 	}
 
-	
+
+
+}
+
+
+void TwoD_logarithm(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
+
+	int u = x0, v = y0;
+
+	Mat matR = cvarrToMat(R);
+
+	double cur_MAD = 0;
+	double min_MAD = 10000.0; 
+	double p = P; 
+	int a = p; 
+	while (a > 1) {
+		a = ceil(p / 2.0);
+	//	printf("%d\n",a);
+		for (int i = -a; i <= a; i = i + a) {
+			for (int j = -a; j <= a; j = j + a) {
+				//	printf("%d,%d\n", i, j);
+				
+				cur_MAD = MAD(C, R, i, j, x0, y0);
+
+					//cur_MAD = MAD(C, R, i, j, u, v);
+
+				if (cur_MAD < min_MAD) {
+
+					min_MAD = cur_MAD;
+
+					u = i, v = j;
+				}
+
+			}
+		}
+
+		//x0 = x0 + u; y0 = y0 + v;
+		printf("%d,%d\n", u, v);
+		p = p / 2.0;
+	}
+	int x = x0 - (N / 2.0), y = y0 - (N / 2.0);
+
+	for (int q = 0; q < N; q++) {
+		for (int p = 0; p < N; p++) {
+			if (x >= ip2.rows - 1) x = ip2.rows - 1;
+
+			if (y >= ip2.cols - 1) y = ip2.cols - 1;
+
+			int n = x + u + P;
+
+			int m = y + v + P;
+
+			if (n >= ip2.rows - 1) n = ip2.rows - 1;
+
+			if (m >= ip2.cols - 1) m = ip2.cols - 1;
+
+			ip2.at<uchar>(x, y) = matR.at<uchar>(n, m);
 
 
 
-
-
+			y++;
+		}
+		x++;
+		y = y0 - (N / 2.0);
+	}
 
 
 	
 }
-
