@@ -46,8 +46,9 @@ int main() {
 	for (x0 = N / 2; x0 < image_C->height; x0 = x0 + N) {
 		
 		for (y0 = N / 2; y0 < image_C->width; y0 = y0 + N) {
-	
+		//	printf("%d,%d\n", x0, y0);
 		//    Sequential(image_C, image_R, ip2, x0, y0);
+			//TwoD_logarithm(image_C, image_R, ip2, 8, 8);
 			TwoD_logarithm(image_C, image_R, ip2, x0, y0);
 			printf("\n");
 		}
@@ -68,6 +69,7 @@ int main() {
 }
 
 double MAD(IplImage * C, IplImage *R, int i, int j,int X0,int Y0) {
+//	printf("%d,%d\n", X0, Y0);
 
 	int x = X0 - (N / 2.0), y = Y0 - (N / 2.0);
 
@@ -86,7 +88,8 @@ double MAD(IplImage * C, IplImage *R, int i, int j,int X0,int Y0) {
 
 			if (xC >= matC.rows - 1) xC = matC.rows - 1;
 			if (yC >= matC.cols - 1) yC = matC.cols - 1;
-			
+			if (xC <=0) xC = 0;
+			if (yC <=0) yC = 0;
 
 			double Cvalue =  matC.at<uchar>(xC, yC);
 
@@ -95,11 +98,13 @@ double MAD(IplImage * C, IplImage *R, int i, int j,int X0,int Y0) {
 
 			if (xR >= matC.rows - 1) xR = matC.rows - 1;
 			if( yR >= matC.cols - 1) yR = matC.cols - 1;
-			
+			if (xR <= 0) xR = 0;
+			if (yR <= 0) yR = 0;
 
 			double Rvalue = matR.at<uchar>(xR, yR);
 
 			add += abs(Cvalue - Rvalue);
+
 		}
 	}
 
@@ -162,8 +167,8 @@ void Sequential(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
 
 void TwoD_logarithm(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
 
-	int u = x0, v = y0;
-
+	int u = 0, v = 0;
+	int k = x0; int l = y0;
 	Mat matR = cvarrToMat(R);
 
 	double cur_MAD = 0;
@@ -191,26 +196,38 @@ void TwoD_logarithm(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
 			}
 		}
 
-		//x0 = x0 + u; y0 = y0 + v;
-		printf("%d,%d\n", u, v);
+		x0 = x0 + u; y0 = y0 + v;
+		//printf("%d,%d\n", u, v);
+		//printf("---%d,%d\n", x0, y0);
 		p = p / 2.0;
 	}
-	int x = x0 - (N / 2.0), y = y0 - (N / 2.0);
+
+	int x = k - (N / 2.0), y = l - (N / 2.0);
+
+	k = x0 - k; l = y0 - l;
+	//printf("%d,%d\n", k, l);
+
+
+	printf("%d,%d\n", x, y);
 
 	for (int q = 0; q < N; q++) {
 		for (int p = 0; p < N; p++) {
 			if (x >= ip2.rows - 1) x = ip2.rows - 1;
 
 			if (y >= ip2.cols - 1) y = ip2.cols - 1;
+			
+			if (x <= 0) x = 0;
+			if (y <= 0) y = 0;
 
-			int n = x + u + P;
+			int n = x + k + P;
 
-			int m = y + v + P;
+			int m = y + l + P;
 
 			if (n >= ip2.rows - 1) n = ip2.rows - 1;
 
 			if (m >= ip2.cols - 1) m = ip2.cols - 1;
-
+			if (n <= 0) n = 0;
+			if (m <= 0) m = 0;
 			ip2.at<uchar>(x, y) = matR.at<uchar>(n, m);
 
 
@@ -221,6 +238,6 @@ void TwoD_logarithm(IplImage * C, IplImage *R, Mat ip2, int x0, int y0) {
 		y = y0 - (N / 2.0);
 	}
 
-
+	
 	
 }
