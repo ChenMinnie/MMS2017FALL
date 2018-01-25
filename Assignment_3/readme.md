@@ -5,9 +5,9 @@
 ![sol2](https://user-images.githubusercontent.com/32957934/35378516-0bdb7038-01ee-11e8-8f36-ecf50a21ca0d.gif)
 ## Result 
 ### Reference Image
-![i1](https://user-images.githubusercontent.com/32957934/35378820-0e1e4f2c-01ef-11e8-858e-5a5c29c2228f.jpg)
-### Target Image
 ![i2](https://user-images.githubusercontent.com/32957934/35378822-0ff54a8a-01ef-11e8-8d3e-2b4a70bf8ca8.jpg)
+### Target Image
+![i1](https://user-images.githubusercontent.com/32957934/35378820-0e1e4f2c-01ef-11e8-858e-5a5c29c2228f.jpg)
 ### Sequential Search
 * #### Result Image
 ![sequential](https://user-images.githubusercontent.com/32957934/35378846-2245077a-01ef-11e8-80ee-e5f151f924f8.jpg)
