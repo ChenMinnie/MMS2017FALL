@@ -60,11 +60,10 @@ int main() {
 	imshow("TwoD_logarithm", ip2_2);
 
 
-	
-
-
 	imwrite("Sequential.pgm", ip2_1);
 	imwrite("TwoD_logarithm.pgm", ip2_2);
+
+
 	SNR();
 	cvShowImage("Reference", image_R); 
 	cvShowImage("Target", image_C);
